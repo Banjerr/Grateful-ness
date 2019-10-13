@@ -31,33 +31,50 @@
     };
     
     function handleNewEntry() {
-        //Get a transaction
-        //default for OS list is all, default for type is read
         const transaction = db.transaction(["entries"],"readwrite");
-        //Ask for the objectStore
         const store = transaction.objectStore("entries");
 
-        //Define the entry
         const entry = {
             title: currentEntryTitle,
             body: currentEntryBody,
             timestamp: currentEntryTimestamp
         }
 
-        //Perform the add
         const request = store.add(entry);
 
         request.onerror = function(e) {
             console.log("Error",e.target.error.name);
             //some type of error handler
+            clearEntry();
         }
 
         request.onsuccess = function(e) {
             console.log("Woot! Did it");
+            // some type of success handler
+            clearEntry();
         }
     }
-</script>
 
-<input type="text" name="entry-title" id="entry-title" bind:value={currentEntryTitle} placeholder='What are you Grateful for today?' />
-<textarea name="entry-body" id="entry-body" bind:value={currentEntryBody} placeholder="Today I'm Grateful because..."></textarea>
-<button on:click={handleNewEntry}></button>
+    function clearEntry() {
+        currentEntryBody = null;
+        currentEntryTitle = null;
+    }
+ </script>
+
+ <style>
+    input, textarea {
+        width: 100%;
+        margin: 0 auto 2%;
+    }
+
+    .form-container {
+        text-align: right;
+    }
+ </style>
+
+<div class="form-container">
+    <input type="text" name="entry-title" id="entry-title" bind:value={currentEntryTitle} placeholder='What are you Grateful for today?' />
+    <textarea name="entry-body" id="entry-body" bind:value={currentEntryBody} placeholder="Today I'm Grateful because..."></textarea>
+    <button on:click={handleNewEntry}>Save</button>
+    <button on:click={clearEntry}>Clear</button>
+</div>
