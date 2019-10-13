@@ -9,6 +9,10 @@
 		padding: 0 1em;
 	}
 
+	 nav a {
+		 border-bottom: none;
+	 }
+
 	ul {
 		margin: 0;
 		padding: 0;
@@ -26,19 +30,8 @@
 		float: left;
 	}
 
-	.selected {
-		position: relative;
-		display: inline-block;
-	}
-
-	.selected::after {
-		position: absolute;
-		content: '';
-		width: calc(100% - 1em);
-		height: 2px;
-		background-color: rgb(255,62,0);
-		display: block;
-		bottom: -1px;
+	li:before {
+		display: none;
 	}
 
 	a {
