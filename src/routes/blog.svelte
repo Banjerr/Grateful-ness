@@ -1,11 +1,3 @@
-<script context="module">
-	export function preload({ params, query }) {
-		return this.fetch(`blog.json`).then(r => r.json()).then(allPosts => {
-			return { allPosts };
-		});
-	}
-</script>
-
 <script>
 	let db,
 		posts = [],
