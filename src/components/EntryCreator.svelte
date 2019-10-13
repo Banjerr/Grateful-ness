@@ -1,17 +1,30 @@
 <script>
 	let db;
-    let request = indexedDB.open("GratefulDiary", 2);
+    let request = indexedDB.open("GratefulDiary", 3);
     let currentEntryBody,
-        currentEntryTitle;
+        currentEntryTitle,
+        allPosts = [];
     const currentEntryTimestamp = Math.floor(Date.now() / 1000);
 
 	request.onerror = function(event) {
 		console.log("Why didn't you allow my web app to use IndexedDB?! 😭😿");
 		console.error("Database error: " + event.target.errorCode);
-	};
+	}
 
 	request.onsuccess = function(event) {
-		db = event.target.result;
+        db = event.target.result;
+        
+        let transaction = db.transaction(["entries"], "readonly");
+		let objectStore = transaction.objectStore("entries");
+		let cursor = objectStore.openCursor();
+
+		cursor.onsuccess = function (e) {
+			let res = e.target.result;
+			if (res) {
+                allPosts.push(res.value);
+				res.continue();
+			}
+		}
 	}
 
 	request.onupgradeneeded = function (event) {
@@ -19,16 +32,32 @@
         db = event.target.result;
         
         if(!db.objectStoreNames.contains("entries")) {
-            console.log('gonna make it')
             objectStore = db.createObjectStore("entries", { keyPath: "timestamp" });
         } 
 
 		objectStore.createIndex("title", "title", { unique: false });
 
-		objectStore.createIndex("timestamp", "timestamp", { unique: true });
+        objectStore.createIndex("timestamp", "timestamp", { unique: true });
+        
+        objectStore.createIndex("slug", "slug", { unique: true });
 
 		objectStore.createIndex("body", "body", { unique: false });
-    };
+    }
+
+    function generateEntrySlug(string) {
+        const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+        const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+        const p = new RegExp(a.split('').join('|'), 'g')
+
+        return string.toString().toLowerCase()
+            .replace(/\s+/g, '-') // Replace spaces with -
+            .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+            .replace(/&/g, '-and-') // Replace & with 'and'
+            .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+            .replace(/\-\-+/g, '-') // Replace multiple - with single -
+            .replace(/^-+/, '') // Trim - from start of text
+            .replace(/-+$/, '') // Trim - from end of text
+    }
     
     function handleNewEntry() {
         const transaction = db.transaction(["entries"],"readwrite");
@@ -37,7 +66,8 @@
         const entry = {
             title: currentEntryTitle,
             body: currentEntryBody,
-            timestamp: currentEntryTimestamp
+            timestamp: currentEntryTimestamp,
+            slug: generateEntrySlug(currentEntryTitle)
         }
 
         const request = store.add(entry);
