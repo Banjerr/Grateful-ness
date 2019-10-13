@@ -1,0 +1,20 @@
+{
+	"background_color": "#ffffff",
+	"theme_color": "#333333",
+	"name": "Grateful-ness",
+	"short_name": "Grateful-ness",
+	"display": "minimal-ui",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "dancing-bear.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "dancing-bear.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}
