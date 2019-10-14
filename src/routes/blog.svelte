@@ -73,6 +73,10 @@
 		margin: 0 0 1em 0;
 		line-height: 1.5;
 	}
+
+	.entry {
+		cursor: pointer;
+	}
 </style>
 
 <svelte:head>
@@ -87,7 +91,7 @@
 				tell Sapper to load the data for the page as soon as
 				the user hovers over the link or taps it, instead of
 				waiting for the 'click' event -->
-		<li on:click="{() => selectEntry(post)}">{post.title} - {new Date(post.timestamp * 1000).toUTCString()}</li>
+		<li class="entry" on:click="{() => selectEntry(post)}">{post.title} - {new Date(post.timestamp * 1000).toUTCString()}</li>
 	{/each}
 </ul>
 
