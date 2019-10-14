@@ -1,6 +1,7 @@
 <script>
 	let db;
     let request = indexedDB.open("GratefulDiary", 2);
+    let randomQuote = '';
     let currentEntryBody,
         currentEntryTitle;
     const currentEntryTimestamp = Math.floor(Date.now() / 1000);
@@ -59,6 +60,19 @@
         currentEntryBody = null;
         currentEntryTitle = null;
     }
+
+    function DayQuote(){
+        var arrQuote = ["Your time is limited, so don't waste it living someone else's life",
+        "Everyone lives by selling something", 
+        "If you cannot do great things, do small things in a great way",
+        "Nothing is really work unless you would rather be doing something else",
+        "Without hustle, talent will only carry you so far"];
+
+        //var num = Math.floor(Math.random() * arrQuote.length);
+        randomQuote = arrQuote[Math.floor(Math.random()*Math.floor(arrQuote.length))];
+    }
+
+    DayQuote()
  </script>
 
  <style>
@@ -70,6 +84,13 @@
     .form-container {
         text-align: right;
     }
+
+    .form-quote{
+        text-align: center;
+        padding-top:50px;
+        color:#777;
+        font-size:28px;
+    }
  </style>
 
 <div class="form-container">
@@ -77,4 +98,7 @@
     <textarea name="entry-body" id="entry-body" bind:value={currentEntryBody} placeholder="Today I'm Grateful because..."></textarea>
     <button on:click={handleNewEntry}>Save</button>
     <button on:click={clearEntry}>Clear</button>
+</div>
+<div class="form-quote">
+    <p>" {randomQuote} "</p>
 </div>
