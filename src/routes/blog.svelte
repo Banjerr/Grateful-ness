@@ -80,7 +80,7 @@
 </style>
 
 <svelte:head>
-	<title>Blog</title>
+	<title>Grateful-ness 💀 Blog</title>
 </svelte:head>
 
 <h1>Recent entries</h1>
