@@ -89,6 +89,8 @@
         currentEntryBody = null;
         currentEntryTitle = null;
     }
+
+    
  </script>
 
  <style>
@@ -100,6 +102,8 @@
     .form-container {
         text-align: right;
     }
+
+    
  </style>
 
 <div class="form-container">
@@ -108,3 +112,4 @@
     <button on:click={handleNewEntry}>Save</button>
     <button on:click={clearEntry}>Clear</button>
 </div>
+
