@@ -1,5 +1,7 @@
 <script>
-  let quoteOfTheDay = "";
+  let quoteOfTheDay,
+    imageOfTheDaySrc,
+    numberOfImages = 12;
 
   function DeadQuote() {
     var arrQuote = [
@@ -26,6 +28,21 @@
       arrQuote[Math.floor(Math.random() * Math.floor(arrQuote.length))];
   }
 
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function DeadImage() {
+    const min = 1,
+      max = numberOfImages;
+    const randomImgNum = getRandomInt(min, max);
+
+    imageOfTheDaySrc = randomImgNum;
+  }
+
+  DeadImage();
   DeadQuote();
 </script>
 
@@ -39,7 +56,6 @@
 </style>
 
 <figure>
-  <!-- TODO make quote/image of the day components -->
-  <!-- <img alt={imageOfTheDayAlt} src={imageOfTheDaySrc}> -->
+  <img alt="Grateful Dead" src="img/picture{imageOfTheDaySrc}.jpg">
   <figcaption>{quoteOfTheDay}</figcaption>
 </figure>
