@@ -1,7 +1,7 @@
 <script>
   let quoteOfTheDay,
     imageOfTheDaySrc,
-    numberOfImages = 12;
+    numberOfImages = 11;
   function DeadQuote() {
     var arrQuote = [
       "Talk about your plenty, talk about your ills, one man gathers what another man spills.",

@@ -2,13 +2,13 @@
   import * as fcl from "@onflow/fcl";
   import { onMount } from "svelte";
   import { stores } from "@sapper/app";
+  import { userDataStore } from "../userData";
 
   const { session } = stores();
 
   const { ENV, ACCESS_NODE, WALLET_DISCOVERY } = $session;
 
-  let userData = null,
-    parsedUserData = null;
+  let parsedUserData = null;
 
   fcl
     .config()
@@ -23,22 +23,32 @@
       parsedUserData = JSON.parse(tempUserdata);
     }
     if (parsedUserData && parsedUserData.loggedIn) {
-      userData = parsedUserData;
-      console.log("userData", userData);
+      userDataStore.update(() => parsedUserData);
+      console.log("userData", parsedUserData);
     }
   });
 
   function logoutUser() {
     console.log("logging out");
     fcl.unauthenticate();
+    userDataStore.set(null);
   }
 
   function loginUser() {
     console.log("logging in");
     fcl.authenticate();
+    userDataStore.update(() => parsedUserData);
   }
 </script>
 
-<button on:click={userData !== null ? logoutUser : loginUser}>
-  {userData !== null ? "Logout" : "Login"}
+<button on:click={$userDataStore !== null ? logoutUser : loginUser}>
+  {$userDataStore !== null ? "Logout" : "Login"}
 </button>
+<br />
+<pre>
+  <code>
+    {$userDataStore !== null
+      ? JSON.stringify($userDataStore, null, 2)
+      : "No user data"}
+  </code>
+</pre>

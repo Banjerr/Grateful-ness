@@ -1,17 +1,4 @@
 <script>
-  let userData = null,
-    parsedUserData = null;
-  import { onMount } from "svelte";
-  onMount(() => {
-    let tempUserdata = sessionStorage.getItem("CURRENT_USER");
-    if (tempUserdata) {
-      parsedUserData = JSON.parse(tempUserdata);
-    }
-    if (parsedUserData && parsedUserData.loggedIn) {
-      userData = parsedUserData;
-      console.log("userData", userData);
-    }
-  });
   export let segment;
 </script>
 
@@ -30,7 +17,7 @@
 
     <li>
       <a class={segment === "account" ? "selected" : ""} href="account">
-        {userData ? "logout" : "login"}
+        account
       </a>
     </li>
   </ul>
