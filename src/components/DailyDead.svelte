@@ -2,7 +2,6 @@
   let quoteOfTheDay,
     imageOfTheDaySrc,
     numberOfImages = 12;
-
   function DeadQuote() {
     var arrQuote = [
       "Talk about your plenty, talk about your ills, one man gathers what another man spills.",
@@ -21,30 +20,30 @@
       "When God way up in heaven, for whatever it was worth, thought he'd have a big old party, thought he'd call it planet Earth.",
       "Picture a bright blue ball just spinning, spinning free dizzy with eternity. Paint it with a skin of sky, brush in some clouds and sea call it home for you and me",
       "There is a road, no simple highway, between the dawn and the dark of night. And if you go no one may follow, that path is for your steps alone.",
-      "Goin’ home, goin’ home. By the waterside I will rest my bones. Listen to the river sing sweet songs to rock my soul."
+      "Goin’ home, goin’ home. By the waterside I will rest my bones. Listen to the river sing sweet songs to rock my soul.",
     ];
-
     quoteOfTheDay =
       arrQuote[Math.floor(Math.random() * Math.floor(arrQuote.length))];
   }
-
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-
   function DeadImage() {
     const min = 1,
       max = numberOfImages;
     const randomImgNum = getRandomInt(min, max);
-
     imageOfTheDaySrc = randomImgNum;
   }
-
   DeadImage();
   DeadQuote();
 </script>
+
+<figure>
+  <img alt="Grateful Dead" src="img/picture{imageOfTheDaySrc}.jpg" />
+  <figcaption>{quoteOfTheDay}</figcaption>
+</figure>
 
 <style>
   figcaption {
@@ -54,8 +53,3 @@
     font-size: 28px;
   }
 </style>
-
-<figure>
-  <img alt="Grateful Dead" src="img/picture{imageOfTheDaySrc}.jpg">
-  <figcaption>{quoteOfTheDay}</figcaption>
-</figure>
