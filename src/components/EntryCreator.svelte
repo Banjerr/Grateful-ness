@@ -1,41 +1,41 @@
 <script>
   let db;
-  let request = indexedDB.open("GratefulDiary", 3);
+  // let request = indexedDB.open("GratefulDiary", 3);
   let currentEntryBody,
     currentEntryTitle,
     allPosts = [];
   const currentEntryTimestamp = Math.floor(Date.now() / 1000);
-  request.onerror = function (event) {
-    console.log("Why didn't you allow my web app to use IndexedDB?! 😭😿");
-    console.error("Database error: " + event.target.errorCode);
-  };
-  request.onsuccess = function (event) {
-    db = event.target.result;
+  // request.onerror = function (event) {
+  //   console.log("Why didn't you allow my web app to use IndexedDB?! 😭😿");
+  //   console.error("Database error: " + event.target.errorCode);
+  // };
+  // request.onsuccess = function (event) {
+  //   db = event.target.result;
 
-    let transaction = db.transaction(["entries"], "readonly");
-    let objectStore = transaction.objectStore("entries");
-    let cursor = objectStore.openCursor();
-    cursor.onsuccess = function (e) {
-      let res = e.target.result;
-      if (res) {
-        allPosts.push(res.value);
-        res.continue();
-      }
-    };
-  };
-  request.onupgradeneeded = function (event) {
-    let objectStore;
-    db = event.target.result;
+  //   let transaction = db.transaction(["entries"], "readonly");
+  //   let objectStore = transaction.objectStore("entries");
+  //   let cursor = objectStore.openCursor();
+  //   cursor.onsuccess = function (e) {
+  //     let res = e.target.result;
+  //     if (res) {
+  //       allPosts.push(res.value);
+  //       res.continue();
+  //     }
+  //   };
+  // };
+  // request.onupgradeneeded = function (event) {
+  //   let objectStore;
+  //   db = event.target.result;
 
-    if (!db.objectStoreNames.contains("entries")) {
-      objectStore = db.createObjectStore("entries", { keyPath: "timestamp" });
-    }
-    objectStore.createIndex("title", "title", { unique: false });
-    objectStore.createIndex("timestamp", "timestamp", { unique: true });
+  //   if (!db.objectStoreNames.contains("entries")) {
+  //     objectStore = db.createObjectStore("entries", { keyPath: "timestamp" });
+  //   }
+  //   objectStore.createIndex("title", "title", { unique: false });
+  //   objectStore.createIndex("timestamp", "timestamp", { unique: true });
 
-    objectStore.createIndex("slug", "slug", { unique: true });
-    objectStore.createIndex("body", "body", { unique: false });
-  };
+  //   objectStore.createIndex("slug", "slug", { unique: true });
+  //   objectStore.createIndex("body", "body", { unique: false });
+  // };
   function generateEntrySlug(string) {
     const a =
       "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
@@ -55,25 +55,25 @@
   }
 
   function handleNewEntry() {
-    const transaction = db.transaction(["entries"], "readwrite");
-    const store = transaction.objectStore("entries");
-    const entry = {
-      title: currentEntryTitle,
-      body: currentEntryBody,
-      timestamp: currentEntryTimestamp,
-      slug: generateEntrySlug(currentEntryTitle),
-    };
-    const request = store.add(entry);
-    request.onerror = function (e) {
-      console.log("Error", e.target.error.name);
-      //some type of error handler
-      clearEntry();
-    };
-    request.onsuccess = function (e) {
-      console.log("Woot! Did it");
-      // some type of success handler
-      clearEntry();
-    };
+    // const transaction = db.transaction(["entries"], "readwrite");
+    // const store = transaction.objectStore("entries");
+    // const entry = {
+    //   title: currentEntryTitle,
+    //   body: currentEntryBody,
+    //   timestamp: currentEntryTimestamp,
+    //   slug: generateEntrySlug(currentEntryTitle),
+    // };
+    // const request = store.add(entry);
+    // request.onerror = function (e) {
+    //   console.log("Error", e.target.error.name);
+    //   //some type of error handler
+    //   clearEntry();
+    // };
+    // request.onsuccess = function (e) {
+    //   console.log("Woot! Did it");
+    //   // some type of success handler
+    //   clearEntry();
+    // };
   }
   function clearEntry() {
     currentEntryBody = null;
