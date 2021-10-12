@@ -2,35 +2,35 @@
   import Modal from "../components/Modal.svelte";
   let db,
     posts = [],
-    request = indexedDB.open("GratefulDiary", 3),
+    // request = indexedDB.open("GratefulDiary", 3),
     showModal = false,
     currentEntryBody,
     currentEntryHeader,
     currentEntryTimestamp;
-  request.onerror = function (event) {
-    console.log("Why didn't you allow my web app to use IndexedDB?! 😭😿");
-    console.error("Database error: " + event.target.errorCode);
-  };
-  request.onsuccess = function (event) {
-    db = event.target.result;
+  // request.onerror = function (event) {
+  //   console.log("Why didn't you allow my web app to use IndexedDB?! 😭😿");
+  //   console.error("Database error: " + event.target.errorCode);
+  // };
+  // request.onsuccess = function (event) {
+  //   db = event.target.result;
 
-    let transaction = db.transaction(["entries"], "readonly");
-    let objectStore = transaction.objectStore("entries");
-    let cursor = objectStore.openCursor();
-    cursor.onsuccess = function (e) {
-      let res = e.target.result;
-      if (res) {
-        posts.push(res.value);
-        res.continue();
-      }
-    };
-    transaction.oncomplete = function () {
-      posts.forEach((post) => {
-        post.html = post.body.replace(/^\t{3}/gm, "");
-      });
-      posts = posts;
-    };
-  };
+  //   let transaction = db.transaction(["entries"], "readonly");
+  //   let objectStore = transaction.objectStore("entries");
+  //   let cursor = objectStore.openCursor();
+  //   cursor.onsuccess = function (e) {
+  //     let res = e.target.result;
+  //     if (res) {
+  //       posts.push(res.value);
+  //       res.continue();
+  //     }
+  //   };
+  //   transaction.oncomplete = function () {
+  //     posts.forEach((post) => {
+  //       post.html = post.body.replace(/^\t{3}/gm, "");
+  //     });
+  //     posts = posts;
+  //   };
+  // };
   function selectEntry(entry) {
     currentEntryBody = entry.html;
     currentEntryHeader = entry.title;
@@ -65,10 +65,6 @@
 
 <ul>
   {#each posts as post}
-    <!-- we're using the non-standard `rel=prefetch` attribute to
-				tell Sapper to load the data for the page as soon as
-				the user hovers over the link or taps it, instead of
-				waiting for the 'click' event -->
     <li class="entry" on:click={() => selectEntry(post)}>
       {post.title} - {new Date(post.timestamp * 1000).toUTCString()}
     </li>

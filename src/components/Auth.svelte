@@ -1,44 +1,50 @@
 <script>
   import * as fcl from "@onflow/fcl";
-  import { onMount } from "svelte";
+  import { onDestroy } from "svelte";
   import { stores } from "@sapper/app";
-  import { userDataStore } from "../userData";
+  import { userDataStore } from "../stores/userData";
 
+  // get env vars
   const { session } = stores();
-
   const { ENV, ACCESS_NODE, WALLET_DISCOVERY } = $session;
-
-  let parsedUserData = null;
-
   fcl
-    .config()
+    .config({
+      "fcl.appDomainTag": "Grateful-Ness",
+    })
     .put("env", ENV)
     .put("accessNode.api", ACCESS_NODE)
     .put("discovery.wallet", WALLET_DISCOVERY)
-    .put("app.detail.title", "Greateful-Ness");
+    .put("app.detail.title", "Grateful-Ness");
 
-  onMount(() => {
-    let tempUserdata = sessionStorage.getItem("CURRENT_USER");
-    if (tempUserdata) {
-      parsedUserData = JSON.parse(tempUserdata);
-    }
-    if (parsedUserData && parsedUserData.loggedIn) {
-      userDataStore.update(() => parsedUserData);
-      console.log("userData", parsedUserData);
+  // get user data
+  const unsubscribe = fcl.currentUser().subscribe((currentUser) => {
+    if (currentUser && currentUser.loggedIn) {
+      userDataStore.update(() => currentUser);
+    } else {
+      userDataStore.set(null);
     }
   });
 
   function logoutUser() {
-    console.log("logging out");
     fcl.unauthenticate();
     userDataStore.set(null);
   }
 
   function loginUser() {
-    console.log("logging in");
-    fcl.authenticate();
-    userDataStore.update(() => parsedUserData);
+    fcl
+      .authenticate()
+      .then((currentUser) => {
+        userDataStore.update(() => currentUser);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
+
+  // clean up currentUser subscription
+  onDestroy(() => {
+    unsubscribe();
+  });
 </script>
 
 <button on:click={$userDataStore !== null ? logoutUser : loginUser}>
